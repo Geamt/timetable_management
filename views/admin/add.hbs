@@ -1,0 +1,507 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+        <nav>
+            <div class="nav nav-tabs row" style="border-bottom : none" id="nav-tab" role="tablist">
+                <div class="col-md-4">
+                    <a class="nav-item nav-link active btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Course</a>
+                </div>
+                <div class="col-md-4">
+                    <a class="nav-item nav-link btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Semester</a>
+                </div>
+                <div class="col-md-4">
+                    <a class="nav-item nav-link btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab"
+                        aria-controls="nav-contact" aria-selected="false"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Timeslot</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="tab-content" id="nav-tabContent">
+
+
+        {{!-- Course --}}
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Add Course</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group course">
+                                    <label for="course">Course</label>
+                                    <input type="text" class="form-control" id="course" placeholder="course">
+                                    <div id="course_error"></div>
+                                </div>
+
+
+                                <button type="button" class="btn btn-primary" id="add_course_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Courses</h3>
+                        </div>
+                        <hr>
+                        <ul class="list-group" id="course_list">
+                            {{#each courses}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{this.name}}
+                                {{!-- <button type="button" class="badge badge-danger course_btn" id={{this._id}}><i class="fa fa-times "></i></button> --}}
+                                <span class="badge badge-danger course_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+                            {{/each }}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        {{!-- Semester --}}
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="container" id="add_semester" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Semester</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group semester">
+                                    <label for="course">Semester</label>
+                                    <input type="number" class="form-control" id="semester" placeholder="semster">
+                                    <div id="sem_error"></div>
+                                </div>
+                                
+                                <button type="button" class="btn btn-primary" id="add_sem_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Semesters</h3>
+                        </div>
+                        <ul class="list-group" id="sem_list">
+
+
+                            {{#each sems}}
+
+                            {{!-- {{#is this.duration '1'}} --}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{this.sem}}
+                                <span class="badge badge-danger sem_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+                            {{!-- {{/is}} --}}
+                            {{/each }}
+                        </ul>
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        {{!-- Timeslot --}}
+        <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+            <div class="container" id="add_timeslot" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Time Slots</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="course">Start Time</label>
+                                    <div class="bootstrap-timepicker">
+                                        <input id="timepicker5" type="text" class="form-control input-small" readonly>
+
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="course">Ennd Time</label>
+                                    <div class="bootstrap-timepicker">
+                                        <input id="timepicker6" type="text" class="form-control input-small" readonly>
+
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" id="add_time_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Time Slots</h3>
+                        </div>
+                        <hr>
+                        <ul class="list-group" id="timeslot_list">
+                            {{#each times}}
+
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{this.start_time}}-{{this.end_time}}
+                                <span class="badge badge-danger timeslot_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+
+                            {{/each }}
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{>admin/admin_footer}}
+
+<script>
+    $reloadCourse = function () {
+        $.ajax({
+            url: "http://localhost:3000/admin/get_course",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#course_list").html("");
+                    $.each(dresult, function (i, value) {
+                        $("#course_list").append(
+
+                            '<li class="list-group-item d-flex justify-content-between align-items-center" >' + value['name'] + '<span class="badge badge-danger course_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>'
+                        );
+                    });
+                    if ($("#course_list").children('li').length == 0) { $("#course_list").parent().parent().hide(); }
+                    else { $("#course_list").parent().parent().show(); }
+                }
+            }
+        });
+    }
+    $reloadSem = function () {
+        $.ajax({
+            url: "http://localhost:3000/admin/get_sem",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#sem_list").html("");
+                    console.log("hello");
+                    $.each(dresult, function (i, value) {
+                        $("#sem_list").append("<li class='list-group-item d-flex justify-content-between align-items-center'>" + value['sem'] + "<span class='badge badge-danger sem_btn' id='" + value['_id'] + "'><i class='fa fa-times'></i></span></li>"); 
+                    });
+                    if ($("#sem_list").children('li').length == 0) { $("#sem_list").parent().parent().hide(); }
+                    else { $("#sem_list").parent().parent().show(); }
+                    
+
+                }
+
+            }
+        });
+    }
+
+    $reloadTimeslot = function () {
+        $.ajax({
+            url: "http://localhost:3000/admin/get_timeslot",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#timeslot_list").html("");
+                    $.each(dresult, function (i, value) {
+                        console.log('hello');
+                        $("#timeslot_list").append(
+
+                            '<li class="list-group-item d-flex justify-content-between align-items-center" >' + value['start_time'] + '-' + value['end_time'] + '<span class="badge badge-danger timeslot_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>'
+                        );
+
+                    });
+                    if ($("#timeslot_list").children('li').length == 0) { $("#timeslot_list").parent().parent().hide(); }
+                    else { $("#timeslot_list").parent().parent().show(); }
+
+                }
+            }
+        });
+
+    }
+
+    $(document).ready(function () {
+        $('#timepicker5').timepicker({
+            template: false,
+            showInputs: true,
+            minuteStep: 5
+        });
+        $('#timepicker6').timepicker({
+            template: false,
+            showInputs: true,
+            minuteStep: 5
+        });
+        $reloadSem();
+        $reloadCourse();
+        $reloadTimeslot();
+        $(document).on('blur', '#course', function () {
+            var course = $(this).val();
+            //alert(course);
+            $.ajax({
+                url: "http://localhost:3000/admin/check_course",
+                method: "post",
+                data: { course: course },
+                success: function (data) {
+
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+
+                        if (data["available"] == false) {
+                            $(".course").addClass('has-error');
+                            $("#course_error").html("<ul class='error-list'><li>This course is alredy exist</li></ul>");
+                            //alert("User name alredy taken by other");
+
+                        }
+                        else {
+                            $(".course").removeClass('has-error');
+                            $("#course_error").html("");
+                        }
+                        // $(".username").addClass("has-error");
+                        // $("#user_error").html("<ul><li>Username is alredy exist</li></ul>");
+                    } else {
+                        alert("Something Goes Wrong");
+                        //$(".username").removeClass("has-error");
+                    }
+                }
+            });
+        });
+        $(document).on('click', '#add_course_submit', function () {
+            var course = $("#course").val().toLowerCase();
+            //alert(course);
+            if (course != "") {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/add_course',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { course: course },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            $("#course").val("");
+                            $reloadCourse();
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+            else {
+                swal('Oops!', 'All fields are required!', 'error');
+            }
+
+        });
+
+        $(document).on('blur', '#semester', function () {
+            var semester = $(this).val();
+            //alert(semester);
+            $.ajax({
+                url: "http://localhost:3000/admin/check_sem",
+                method: "post",
+                data: { sem: semester },
+                success: function (data) {
+
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+
+                        if (data["available"] == false) {
+                            $(".semester").addClass('has-error');
+                            $("#sem_error").html("<ul class='error-list'><li>This semester is alredy exist</li></ul>");
+                            //alert("User name alredy taken by other");
+
+                        }
+                        else {
+                            $(".semester").removeClass('has-error');
+                            $("#sem_error").html("");
+                        }
+                        // $(".username").addClass("has-error");
+                        // $("#user_error").html("<ul><li>Username is alredy exist</li></ul>");
+                    } else {
+                        alert("Something Goes Wrong");
+                        //$(".username").removeClass("has-error");
+                    }
+                }
+            });
+        });
+        $(document).on('click', '#add_sem_submit', function () {
+            var semester = $("#semester").val().toLowerCase();
+            //var duration = $("#duration").val().toLowerCase();
+            //var has-error = $(".semester").hasClass('has-error');
+
+            if (semester > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/add_sem',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { sem: semester},//, duration: duration },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            $("#semester").val("");
+                            $reloadSem();
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+            else {
+                swal('Oops!', 'All fields are required!', 'error');
+            }
+        });
+        /*$(document).on('click','#add_time_submit',function () {
+            var st = $("#timepicker5").val();
+            alert(st);
+        });*/
+
+        $(document).on('click', '.course_btn', function () {
+            var id = $(this).attr('id')
+            if (id.length > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/remove_course',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { course: id },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            $reloadCourse()
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.sem_btn', function () {
+            var id = $(this).attr('id')
+            //alert(id);
+            if (id.length > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/remove_semester',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { semester: id },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            $reloadSem()
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '.timeslot_btn', function () {
+            var id = $(this).attr('id')
+            //alert(id);
+            if (id.length > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/remove_timeslot',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { time_slot: id },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            //alert(status);
+                            $reloadTimeslot()
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+        });
+
+        $(document).on('click', '#add_time_submit', function () {
+            var start = $("#timepicker5").val();
+            var end = $("#timepicker6").val();
+
+            if (start.length == 0 || end.length == 0) {
+                swal('Oops!', 'All field are required', 'warning');
+            }
+            else {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/add_timeslot',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { start_time: start, end_time: end },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+
+                            $reloadTimeslot()
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+
+            /**/
+            //alert("start : " + $("#timepicker5").val())
+            //alert("end : " + $("#timepicker6").val())
+        });
+
+    });
+</script>

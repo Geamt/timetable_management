@@ -1,0 +1,153 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+        <nav>
+            <div class="nav nav-tabs row" style="border-bottom : none;margin-left: 1%;" id="nav-tab" role="tablist">
+                <div class="col-md-4">
+                    <a class="nav-item nav-link active btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Classes</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="tab-content" id="nav-tabContent">
+
+        {{!-- Course --}}
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Add Class</div>
+                        <div class="card-body">
+                            <form>
+                                {{!-- <div class="form-group">
+                                    <select class="custom-select form-control" id="sem" name="user_type" required>
+                                        <option value="0">Semester</option>
+                                        {{#each sems}}
+                                        <option value={{this._id}} style="text-transform:uppercase;">{{this.sem}}
+                                        </option>
+                                        {{/each}}
+                                    </select>
+                                    <div id="utype_error"></div>
+                                </div> --}}
+
+                                <div class="form-group course">
+                                    <label for="class">Class</label>
+                                    <input type="text" class="form-control" id="class" placeholder="class">
+                                    <div id="venue_error"></div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary" id="add_class_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>classes</h3>
+                        </div>
+                        <hr>
+                        <ul class="list-group" id="course_list">
+                            {{#each classes}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                 Class : {{this.class}} {{!--- Sem : {{this.sem}} --}}
+                                {{!-- <button type="button" class="badge badge-danger course_btn" id={{this._id}}><i class="fa fa-times "></i></button> --}}
+                                <span class="badge badge-danger class_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+                            {{/each }}
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{>admin/admin_footer}}
+
+<script>
+    $reloadClasses = function () {
+        $.ajax({
+            url: "http://localhost:3000/scheduler/get_classes",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#course_list").html("");
+                    $.each(dresult, function (i, value) {
+                        $("#course_list").append('<li class="list-group-item d-flex justify-content-between align-items-center" >Class : '+value['class']+'<span class="badge badge-danger class_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>');
+                    });
+                    
+                    if ($("#course_list").children('li').length == 0) { $("#course_list").parent().parent().hide(); }
+                    else { $("#course_list").parent().parent().show(); }
+                }
+            }
+        });
+    }
+    $reloadClasses();
+    $(document).ready(function () {
+        
+        $(document).on('click', '#add_class_submit', function () {
+
+            var cls = $("#class").val().toLowerCase();
+            //var sem = $("#sem").val();
+
+            if (cls.length) {
+                $.ajax({
+                    url: 'http://localhost:3000/scheduler/add_classes',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { class: cls },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            $reloadClasses()
+                            $("#class").val('');
+                            //$("#sem").val(0);
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            } else {
+                swal('Oops!', 'All fields are require!', 'warning');
+            }
+        });
+        $(document).on('click', '.class_btn', function () {
+            var cls = $(this).attr('id');
+            
+            $.ajax({
+                url: 'http://localhost:3000/scheduler/remove_classes',
+                method: 'POST',
+                dataType: 'json',
+                data: { class: cls },
+                success: function (data) {
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+                        $reloadClasses()
+                    } else {
+                        swal('Oops!', 'Something goes wrong!', 'warning');
+                    }
+                }
+            });
+        })
+    });
+</script>

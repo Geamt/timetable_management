@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Time Table Allocation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+</head>
+
+<body>
+    <div class="container-fluid bg-dark-1">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center heading-primary">Time Table :)</h3>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark-1 m-top-2">
+        <div class="row">
+            <div class="col-md-12 menu-bar">
+                <div class="menu">
+                    <span>
+                        Get By : <select id="get-list">
+
+                            <!--<option id="2">Semester</option>-->
+                            <option id="1">Class</option>
+                            <option id="2">Day</option>
+                        </select>
+                    </span>
+                    <span>
+                        Duration : <select id="duration-list">
+                            {{#each duration}}
+                            <option id={{this._id}}>{{this.start_duration}}-{{this.end_duration}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span>
+                        Days : <select id="day-list">
+                            {{#each days}}
+                            <option id={{this._id}}>{{this.day_name}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span>
+                        Semester : <select id="semester-list">
+                            {{#each sems}}
+                            <option id={{this._id}}>{{this.sem}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span>
+                        Div : <select id="division-list">
+                            {{#each clss}}
+                            <option id={{this._id}}>{{this.class}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span style="position:relative;"><a href="javascript:;" class="__btn __btn-primary"
+                            id="btn_export">Get</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid m-top-2 m-bottom-2">
+        <div class="row">
+            <div class="__time-table">
+                <div class="__table-column" id="table_days">
+
+                    {{#each days}}
+                    <div class="__table-heading" id={{this._id}}>
+                        <span>{{this.day_name}}</span>
+                    </div>
+                    {{/each}}
+
+                </div>
+            </div>
+            <div class="__time-table">
+                {{#each days}}
+                <div class="__table-column-small-device">
+                    <ul class="__table-heading-small-device">
+                        <li><span id={{this._id}}>{{this.day_name}}</span></li>
+                    </ul>
+                    <ul class="__table-body">
+                        {{#each ../time_slot}}
+                        <li></li>
+                        {{/each}}
+
+                    </ul>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/core/jquery.js"></script>
+<script src="js/core/bootstrap.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btn_export").on('click', function () {
+            var getby = $('option:selected', '#get-list').attr('id');
+            var duration = $('option:selected', '#duration-list').attr('id');
+            var day = $('option:selected', '#day-list').attr('id');
+            var sem = $('option:selected', '#semester-list').attr('id');
+            var clss = $('option:selected', '#division-list').attr('id');
+
+            $.ajax({
+                url: "http://localhost:3000/faculty/get_tt",
+                method: "POST",
+                data: { getby: getby, duration: duration, day: day, sem: sem, clss: clss },
+                success: function (data) {
+                    if (data['status'] == 200) {
+                        let __time__table = data['data'];
+                        var days = data['days'];
+                        var faculty = data['user'];
+
+                        var day_for_data = [];
+                        for (day_key in days) {
+                            //console.log(day_key)
+                            day_for_data.push(days[day_key]['_id'])
+                        }
+
+                        console.log("faculty : " + faculty);
+                        //let day_for_data = days.values;
+                        let i = 0;
+                        let __day_index = day_for_data[i++];
+                        $('ul.__table-body').each(function () {
+                            let $__table_body = $(this);
+
+                            $__table_body.children('li').each(function () {
+                                let $__table_body_li = $(this);
+                                $__table_body_li.attr('class', '');
+
+                                if ($__table_body_li.index() in __time__table[sem][clss][__day_index]) {
+
+                                    if (Object.entries(__time__table[sem][clss][__day_index][$__table_body_li.index()]).length == 0) {
+                                        $__table_body_li.html('');
+                                    }
+                                    else {
+                                        var content = Object.values(__time__table[sem][clss][__day_index][$__table_body_li.index()]);
+                                        if (__time__table[sem][clss][__day_index][$__table_body_li.index()].hasOwnProperty(faculty)) {
+                                            if (getby == 1) {
+                                                if (content.length === 4) {
+                                                    $__table_body_li.addClass('lecture-info');
+                                                    $__table_body_li.html('<span>' + content[0]['time'] + '</span><span>' + content[1]['faculty'] + '</span><span>' + content[2]['class'] + '</span><span>' + content[3]['subject'] + '</span>');
+                                                }
+                                            }
+                                            else if (getby == 2 && __day_index == day) {
+                                                if (content.length === 4) {
+                                                    $__table_body_li.addClass('lecture-info');
+                                                    $__table_body_li.html('<span>' + content[0]['time'] + '</span><span>' + content[1]['faculty'] + '</span><span>' + content[2]['class'] + '</span><span>' + content[3]['subject'] + '</span>');
+                                                }
+                                            }
+                                            else {
+                                                $__table_body_li.html('');
+                                            }
+                                        }
+                                        else {
+                                            $__table_body_li.html('');
+                                        }
+                                    }
+                                }
+                                else {
+                                    $__table_body_li.html('');
+                                }
+
+
+                            });
+                            __day_index = day_for_data[i++];
+                        });
+                    }
+                    else {
+                        swal('Oops!', 'Something goes wrong!', 'warning');
+                    }
+                }
+            })
+        })
+    });
+</script>
+
+</html>

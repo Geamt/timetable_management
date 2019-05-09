@@ -1,0 +1,138 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+        <nav>
+            <div class="nav nav-tabs row" style="border-bottom : none;margin-left: 1%;" id="nav-tab" role="tablist">
+                <div class="col-md-4">
+                    <a class="nav-item nav-link active btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Venue</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="tab-content" id="nav-tabContent">
+
+        {{!-- Course --}}
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Add Venue</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group course">
+                                    <label for="venue">Venue</label>
+                                    <input type="text" class="form-control" id="venue" placeholder="venue">
+                                    <div id="venue_error"></div>
+                                </div>
+
+
+                                <button type="button" class="btn btn-primary" id="add_venue_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+               
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Venues</h3>
+                        </div>
+                        <hr>
+                        <ul class="list-group" id="venue_list">
+                            {{#each venues}}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{this.venue}}
+                                {{!-- <button type="button" class="badge badge-danger course_btn" id={{this._id}}><i class="fa fa-times "></i></button> --}}
+                                <span class="badge badge-danger venue_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+                            {{/each }}
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{>admin/admin_footer}}
+
+<script>
+    $reloadVenue = function () {
+        $.ajax({
+            url: "http://localhost:3000/admin/get_venues",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#venue_list").html("");
+                    $.each(dresult, function (i, value) {
+                        $("#venue_list").append('<li class="list-group-item d-flex justify-content-between align-items-center" >' + value['venue'] + '<span class="badge badge-danger venue_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>');
+                    });
+
+                    if ($("#venue_list").children('li').length == 0) { $("#venue_list").parent().parent().hide(); }
+                    else { $("#venue_list").parent().parent().show(); }
+                }
+            }
+        });
+    }
+    $reloadVenue();
+    $(document).ready(function () {
+        $(document).on('click', '#add_venue_submit', function () {
+            var venue = $("#venue").val().toLowerCase();
+            //alert(venue.toUpperCase());
+            $.ajax({
+                url: 'http://localhost:3000/admin/add_venue',
+                method: 'POST',
+                dataType: 'json',
+                data: { venue: venue },
+                success: function (data) {
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+                        $reloadVenue();
+                    } else {
+                        swal('Oops!', 'Something goes wrong!', 'warning');
+                    }
+                }
+            });
+        });
+    });
+    
+    $(document).on('click', '.venue_btn', function () {
+            var id = $(this).attr('id')
+            //alert(id);
+            if (id.length > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/remove_venue',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { venue: id },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            //alert(status);
+                            $reloadVenue();
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+        });
+</script>

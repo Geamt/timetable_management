@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1 class="has-danger">{{title}}</h1>
+<button id="add" name="add">Hello</button>
+</body>
+<script src="js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="js/core/popper.min.js" type="text/javascript"></script>
+<script src="js/core/bootstrap.min.js" type="text/javascript"></script>
+
+<script>
+    $(document).ready(function(){
+        //alert(USER);
+        alert("HELLO");
+        $("#add").click(function(){
+            //alert("hello");
+            $.ajax({
+                url: 'http://localhost:3000/add-course',
+                headers: {
+                    'Authorization':'Bearer',
+                    //'X_CSRF_TOKEN':'xxxxxxxxxxxxxxxxxxxx',
+                    //'Content-Type':'application/json'
+                },
+                method: 'POST',
+                dataType: 'json',
+                //data: YourData,
+                success: function(data){
+                    alert(data['token']+" "+data['status']);
+                }
+            });
+        }); 
+    });
+</script>
+</html>

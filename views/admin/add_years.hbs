@@ -1,0 +1,178 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+        <nav>
+            <div class="nav nav-tabs row" style="border-bottom : none;margin-left: 1%;" id="nav-tab" role="tablist">
+                <div class="col-md-4">
+                    <a class="nav-item nav-link active btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Add Durations</a>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="tab-content" id="nav-tabContent">
+
+        {{!-- Course --}}
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+                <div class="col-md-8 col-md-offset-8">
+                    <div class="card border-primary">
+                        <div class="card-header">Years</div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Duration Start</label>
+                                    <input type="text" id="datepicker1" class="form-control"
+                                        placeholder="Year of duration" />
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="course">Duration Start</label>
+                                    <div class="bootstrap-timepicker">
+                                        <input type="text" id="datepicker2" class="form-control"
+                                            placeholder="Year of duration" />
+
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" id="add_year_submit"
+                                    name="submit">Submit</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Time Slots</h3>
+                        </div>
+                        <hr>
+                        <ul class="list-group" id="years_list">
+                            {{#each durations}}
+
+
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{this.start_duration}}-{{this.end_duration}}
+                                <span class="badge badge-danger years_btn" id={{this._id}}><i
+                                        class="fa fa-times "></i></span>
+                            </li>
+
+                            {{/each }}
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{>admin/admin_footer}}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css"
+    rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.js"></script>
+
+<script>
+
+    $reloadDurations = function () {
+        $.ajax({
+            url: "http://localhost:3000/admin/get_duration",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#years_list").html("");
+                    $.each(dresult, function (i, value) {
+                        console.log('hello');
+                        $("#years_list").append(
+                            '<li class="list-group-item d-flex justify-content-between align-items-center" >' + value['start_duration'] + '-' + value['end_duration'] + '<span class="badge badge-danger years_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>'
+                        );
+
+                    });
+                    if($("#years_list").children('li').length==0)
+                        {$("#years_list").parent().parent().hide();}
+                    else
+                        {$("#years_list").parent().parent().show();}
+
+                }
+            }
+        });
+    }
+    $(document).ready(function () {
+        $("#datepicker").datepicker({
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true,
+            startDate: '2019'
+        });
+        /*$("#datepicker").datepicker({
+            format: "yyyy",
+            viewMode: "years",
+            minViewMode: "years",
+            autoclose: true,
+            //startDate: '2019'
+        });*/
+        $reloadDurations();
+        $(document).on('click', '#add_year_submit', function () {
+            var start_duration = $("#datepicker1").val().toLowerCase();
+            var end_duration = $("#datepicker2").val().toLowerCase();
+            /** alert(start_duration);
+             alert(end_duration);*/
+            //alert(venue.toUpperCase());
+            $.ajax({
+                url: 'http://localhost:3000/admin/add_duration',
+                method: 'POST',
+                dataType: 'json',
+                data: { 'start_duration': start_duration, 'end_duration': end_duration },
+                success: function (data) {
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+
+                        $reloadDurations();
+                    } else {
+                        swal('Oops!', 'Something goes wrong!', 'warning');
+                    }
+                }
+            });
+        });
+
+
+        $(document).on('click', '.years_btn', function () {
+            var id = $(this).attr('id')
+            //alert(id);
+            if (id.length > 0) {
+                $.ajax({
+                    url: 'http://localhost:3000/admin/remove_duration',
+                    method: 'POST',
+                    dataType: 'json',
+                    data: { duration: id },
+                    success: function (data) {
+                        var status = data["status"];
+                        //alert(status);
+                        if (status == 200) {
+                            //alert(status);
+                            $reloadDurations();
+                        } else {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                });
+            }
+        });
+
+
+    });
+</script>

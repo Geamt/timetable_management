@@ -1,0 +1,78 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+
+    
+    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+        <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+
+
+            <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                <div class="card border-primary">
+                    <div class="card-header">
+                        <h3>Durations</h3>
+                    </div>
+                    <hr>
+                    <ul class="list-group" id="course_list">
+                        {{#each durations}}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Durations : {{this.start}} - {{this.end}} {{!--- Sem : {{this.sem}} --}}
+                            {{!-- <button type="button" class="badge badge-danger course_btn" id={{this._id}}><i class="fa fa-times "></i></button> --}}
+                            <span class="badge badge-success timetable_btn" id={{this._id}}><i
+                                    class="fa fa-pencil "></i></span>
+                        </li>
+                        {{/each }}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{{>admin/admin_footer}}
+
+<script>
+    /*$reloadTimetable = function () {
+        $.ajax({
+            url: "http://localhost:3000/scheduler/get_classes",
+            method: "post",
+            data: {},
+            success: function (data) {
+                if (data['status'] == 200) {
+                    var dresult = data['data'];
+                    $("#course_list").html("");
+                    $.each(dresult, function (i, value) {
+                        $("#course_list").append('<li class="list-group-item d-flex justify-content-between align-items-center" >Class : ' + value['class'] + '<span class="badge badge-danger class_btn" id=' + value['_id'] + '><i class="fa fa-times "></i></span></li>');
+                    });
+
+                    if ($("#course_list").children('li').length == 0) { $("#course_list").parent().parent().hide(); }
+                    else { $("#course_list").parent().parent().show(); }
+                }
+            }
+        });
+    }
+    $reloadTimetable();*/
+    $(document).ready(function () {
+        $(document).on('click', '.timetable_btn', function () {
+            var timetable = $(this).attr('id');
+            $.ajax({
+                url: 'http://localhost:3000/scheduler/update_timetable_detail',
+                method: 'POST',
+                dataType: 'json',
+                data: { tid: timetable },
+                success: function (data) {
+                    var status = data["status"];
+                    //alert(status);
+                    if (status == 200) {
+                        //$reloadClasses()
+                        window.location.href = data['url'];
+                    } else {
+                        swal('Oops!', 'Something goes wrong!', 'warning');
+                    }
+                }
+            });
+        })
+    });
+</script>

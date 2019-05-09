@@ -1,0 +1,10 @@
+{
+    "env":{ 
+        "JWT_SECRET" : "secret",
+        "SESS_NAME": "my_session",
+        "USER_TYPE" : "",
+        "USER" : "",
+        "TOEKN" : ""
+    }
+
+}

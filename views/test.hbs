@@ -1,0 +1,24 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Time Table Allocation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+</head>
+<body>
+    <h1>{{rs}}</h1>
+</body>
+<script src="js/core/jquery.js"></script>
+<script src="js/core/bootstrap.js"></script>
+<script src="js/script.js"></script>
+<script>
+    $(document).ready(function(){
+
+        var data = JSON.parse('{{rs}}');
+        console.log(data);
+
+    });
+</script>
+</html>

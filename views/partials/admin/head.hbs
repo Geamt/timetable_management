@@ -1,0 +1,142 @@
+{{> admin/admin_header}}
+<div class="wrapper">
+    <div class="sidebar" data-color="" data-image="/img/main5.png">
+
+        <div class="sidebar-wrapper">
+            <div class="logo">
+                <a href="#" class="simple-text logo-mini" style="margin-left:30%;">
+                    <i class="fa fa-calendar" style="zoom: 1.5"></i>
+                </a>
+                <a href="#" class="simple-text logo-normal" style="margin-left:30%;">
+                    Time Table
+                </a>
+            </div>
+            {{#if admin}}
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="collapse" href="#componentsExamples">
+                        <i class="fa fa-cogs"></i>
+                        <p>
+                            Data Management
+                            <b class="caret"></b>
+                        </p>
+                    </a>
+                    <div class="collapse " id="componentsExamples">
+                        <ul class="nav">
+                            <li class="nav-item ">
+                                <a class="nav-link" href="add_subject">
+                                    <span class="sidebar-mini">S</span>
+                                    <span class="sidebar-normal">Subject</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="/admin/add">
+                                    <span class="sidebar-mini">S</span>
+                                    <span class="sidebar-normal">Semester</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="/admin/add">
+                                    <span class="sidebar-mini">TS</span>
+                                    <span class="sidebar-normal">Time Slots</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="/admin/addvenue">
+                                    <span class="sidebar-mini">V</span>
+                                    <span class="sidebar-normal">Venue</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="/admin/adduser">
+                                    <span class="sidebar-mini">AU</span>
+                                    <span class="sidebar-normal">Add User</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+            {{/if}}
+            {{#if hod}}
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="show_tt">
+                        <i class="fa fa-eye"></i>
+                        <p>Show Time Table</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/faculty/suggestion">
+                        <i class="fa fa-hand-paper-o"></i>
+                        <p>Give Suggestion</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/faculty/get_suggestions">
+                        <i class="fa fa-columns"></i>
+                        <p>Show Suggestions</p>
+                    </a>
+                </li>
+            </ul>
+            {{/if}}
+            {{#if scheduler}}
+            <ul class="nav">
+                <li class="nav-item ">
+                    <a class="nav-link" href="index">
+                        <i class="fa fa-external-link"></i>
+                        <p>TimeTable Creation</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="update_timetable">
+                        <i class="fa fa-pencil-square-o"></i>
+                        <p>Update TimeTable</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/faculty/show_tt">
+                        <i class="fa fa-eye"></i>
+                        <p>Show Time Table</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/faculty/suggestion">
+                        <i class="fa fa-hand-paper-o"></i>
+                        <p>Give Suggestion</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="http://localhost:3000/faculty/get_suggestions">
+                        <i class="fa fa-columns"></i>
+                        <p>Show Suggestions</p>
+                    </a>
+                </li>
+            </ul>
+            {{/if}}
+            {{#if faculty}}
+            <ul class="nav">  
+                <li class="nav-item ">
+                    <a class="nav-link" href="show_tt">
+                        <i class="fa fa-eye"></i>
+                        <p>Show Time Table</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="suggestion">
+                        <i class="fa fa-hand-paper-o"></i>
+                        <p>Give Suggestion</p>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a class="nav-link" href="get_suggestions">
+                        <i class="fa fa-columns"></i>
+                        <p>Show Suggestions</p>
+                    </a>
+                </li>
+            </ul>
+            {{/if}}
+
+        </div>
+    </div>
+    {{> admin/nav_bar}}

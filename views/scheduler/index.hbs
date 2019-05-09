@@ -1,0 +1,166 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Time Table Allocation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="css/style.css">
+</head>
+
+<body>
+    <div class="container-fluid bg-dark-1">
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="text-center heading-primary">Time Table :)</h3>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-dark-1 m-top-2">
+        <div class="row">
+            <div class="col-md-12 menu-bar">
+                <div class="menu">
+                    <span>
+                        Duration : <select id="duration-list">
+                            {{#each duration}}
+                            <option id={{this._id}}>{{this.start_duration}}-{{this.end_duration}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span>
+                        Semester : <select id="semester-list">
+                            {{#each sems}}
+                            <option id={{this._id}}>{{this.sem}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span>
+                        Div : <select id="division-list">
+                            {{#each clss}}
+                            <option id={{this._id}}>{{this.class}}</option>
+                            {{/each}}
+                        </select>
+                    </span>
+                    <span style="position:relative;"><a href="javascript:;" class="__btn __btn-primary"
+                            id="btn_export">Export</a></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid m-top-2 m-bottom-2">
+        <div class="row">
+            <div class="__time-table">
+                <div class="__table-column" id="table_days">
+
+                    {{#each days}}
+                    <div class="__table-heading" id={{this._id}}>
+                        <span>{{this.day_name}}</span>
+                    </div>
+                    {{/each}}
+
+                </div>
+            </div>
+            <div class="__time-table">
+                {{#each days}}
+                <div class="__table-column-small-device">
+                    <ul class="__table-heading-small-device">
+                        <li><span id={{this._id}}>{{this.day_name}}</span></li>
+                    </ul>
+                    <ul class="__table-body">
+                        {{#each ../time_slot}}
+                        <li></li>
+                        {{/each}}
+                        
+                    </ul>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+    <div class="popup popup__invisible">
+        <div class="popup__content">
+            <div class="container-fluid m-top-15">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4 class="popup__heading">Select Details</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 popup-menu">
+                        <table>
+                            <tr>
+                                <td>Lecture/Break </td>
+                                <td>
+                                    : <select id="lecture-break">
+                                        <option>Lecture</option>
+                                        <option>Break</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Select Time </td>
+                                <td>
+                                    : <select id="lecture-time-list">
+                                        {{#each time_slot}}
+                                        <option id={{this._id}}>{{this.start_time}}-{{this.end_time}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Select Faculty </td>
+                                <td>
+                                    : <select id="faculty-list">
+                                        {{#each faculty}}
+                                        <option id={{this._id}}>{{this.user_name}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Select Class/Lab </td>
+                                <td>
+                                    : <select id="class-lab-list">
+                                        {{#each vanue}}
+                                        <option id={{this._id}}>{{this.venue}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Select Subject </td>
+                                <td>
+                                    : <select id="subject-list">
+                                        {{#each subject}}
+                                        <option id={{this._id}}>{{this.sub_code}}-{{this.sub_name}}</option>
+                                        {{/each}}
+                                        
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                    <div class="col-md-12">
+                        <p class="__popup_incomplete_error"></p>
+                    </div>
+                    <div class="col-md-12 m-top-15">
+                        <span class="__popup-btn-container"><a href="javascript:;" class="__btn __btn-okay"
+                                id="popup_btn_okay">Okay</a><a href="javascript:;" class="__btn __btn-cancel"
+                                id="popup_btn_cancel">Cancel</a><a href="javascript:;" class="__btn __btn-cancel"
+                                id="popup_btn_clear">Clear</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="js/core/jquery.js"></script>
+<script src="js/core/bootstrap.js"></script>
+<script src="js/script.js"></script>
+
+</html>

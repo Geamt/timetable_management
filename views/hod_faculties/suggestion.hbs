@@ -1,0 +1,103 @@
+{{> admin/head}}
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+
+        <fieldset>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="text" id="datepicker" class="form-control" placeholder="Year of duration" />
+
+                {{!-- <input id="input" class="form-control" placeholder="Time and Date"> --}}
+                <small id="emailHelp" class="form-text text-muted">Please select time and date for suggestion.</small>
+            </div>
+            <div class="form-group">
+                <label for="exampleSelect1">Lecure Time</label>
+                <select class="form-control" style="height:34px;" id="lecture_time">
+                    {{#each times}}
+                    <option id={{this._id}}>{{this.start_time}}-{{this.end_time}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleSelect1">Fcaulty</label>
+                <select class="form-control" style="height:34px;" id="faculty">
+                    {{#each faculty}}
+                    <option id={{this._id}}>{{this.user_name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleSelect1">Semester</label>
+                <select class="form-control" style="height:34px;" id="sem">
+                    {{#each sems}}
+                    <option id={{this._id}}>{{this.sem}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="exampleTextarea">Example textarea</label>
+                <textarea class="form-control" id="suggestion" rows="10"></textarea>
+            </div>
+
+            <button type="submit" id="submit" class="btn btn-primary" style="float:right">Submit</button>
+        </fieldset>
+    </div>
+</div>
+<script src="js/core/jquery.3.2.1.min.js"></script>
+<script src="js/core/bootstrap.min.js"></script>
+{{>admin/admin_footer}}
+
+<script>
+    $("#datepicker").datepicker({
+        format: "dd/mm/yyyy",
+        daysOfWeekDisabled: [0, 6],
+        viewMode: "years",
+        minViewMode: "years",
+        autoclose: true,
+
+
+    });
+
+    $(document).ready(function () {
+        $("#submit").on('click',function(){
+            var dt = $("#datepicker").val();
+            var time = $("#lecture_time").val();
+            var faculty = $("option:selected", "#faculty").attr('id');
+            var sem = $("#sem").val();
+            var suggestion = $("#suggestion").val();
+
+            if(dt!=undefined && dt!=null && time!=undefined && time!=null && faculty!=undefined && faculty!=null && sem!=undefined && sem!=null && suggestion!=undefined && suggestion!=null )
+            {
+                $.ajax({
+                    url : "http://localhost:3000/faculty/add_suggestion",
+                    method : "post",
+                    data : { dt : dt , time : time , faculty : faculty , sem : sem , suggestion : suggestion},
+                    success : function(data){
+                        if(data['status']==200)
+                        {
+                            swal("Good job!", "Suggestion given successfully !", "success").then(function() {
+                                window.location = data['url'];
+                            });
+                        }
+                        else
+                        {
+                            swal('Oops!', 'Something goes wrong!', 'warning');
+                        }
+                    }
+                })
+            }
+            else
+            {
+                alert("blank");
+            }
+        });
+    });
+
+
+</script>
+
+</html>

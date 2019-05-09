@@ -1,0 +1,102 @@
+{{> admin/head}}
+
+<div class="col-sm-12" style="padding-bottom:30%;padding-top: 2%;background: rgb(238, 234, 234)">
+    <div class="container" style="margin: auto">
+        <nav>
+            <div class="nav nav-tabs row" style="border-bottom : none" id="nav-tab" role="tablist">
+                <div class="col-md-6">
+                    <a class="nav-item nav-link active btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home"
+                        aria-selected="true"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Others Given Suggestions</a>
+                </div>
+                <div class="col-md-6">
+                    <a class="nav-item nav-link btn btn-success btn-outline" style="border-radius: 5px;"
+                        id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab"
+                        aria-controls="nav-profile" aria-selected="false"><span class="btn-label">
+                            <i class="fa fa-plus"></i>
+                        </span>Your Given Suggestions</a>
+                </div>
+                
+            </div>
+        </nav>
+    </div>
+
+
+
+
+    <div class="tab-content" id="nav-tabContent">
+
+
+        {{!-- Others --}}
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="container" id="add_course" style="margin-top:5%;margin-left:1%;">
+                
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Suggestions</h3>
+                        </div>
+                       
+
+                        {{#each taken}}
+                        <div class="card">
+                            <div class="card-body">
+                                {{!-- <h4 class="card-title">Card title</h4> --}}
+                                {{!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --}}
+                                <p class="card-text">{{this.content}}</p><br/>
+                                <h6 class="card-link card-subtitle mb-2 text-muted" style="margin-left: 20px;">date : {{this.date}}</h6>
+                                <h6 class="card-link card-subtitle mb-2 text-muted">time : {{this.time}}</h6>
+                                <h6 class="card-link card-subtitle mb-2 text-muted">sem : {{this.sem}}</h6>
+                                <h5 href="#" class="card-link">Suggester : {{this.suggester.user_name}}</h5>
+                            </div>
+                        </div>
+
+                        {{/each}}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+
+
+        {{!-- Semester --}}
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+            <div class="container" id="add_semester" style="margin-top:5%;margin-left:1%;">
+                
+                <div class="col-md-12 col-md-offset-8" style="margin-top: 10%;">
+                    <div class="card border-primary">
+                        <div class="card-header">
+                            <h3>Suggestions</h3>
+                        </div>
+
+                        {{#each given}}
+                        <div class="card">
+                            <div class="card-body">
+                                {{!-- <h4 class="card-title">Card title</h4> --}}
+                                {{!-- <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6> --}}
+                                <p class="card-text">{{this.content}}</p><br/>
+                                <h6 class="card-link card-subtitle mb-2 text-muted" style="margin-left: 20px;">date : {{this.date}}</h6>
+                                <h6 class="card-link card-subtitle mb-2 text-muted">time : {{this.time}}</h6>
+                                <h6 class="card-link card-subtitle mb-2 text-muted">sem : {{this.sem}}</h6>
+                                <h5 href="#" class="card-link">Suggester : {{this.suggestion_taker.user_name}}</h5>
+                            </div>
+                        </div>
+                        {{/each}}
+
+
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{{>admin/admin_footer}}

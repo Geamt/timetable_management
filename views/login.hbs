@@ -1,0 +1,72 @@
+{{>admin/admin_header}}
+<div class="full-page section-image" data-color="" data-image="img/main5.jpg">
+    <!--   you can change the color of the filter page using: data-color="blue | purple | green | orange | red | rose " -->
+    <div class="content">
+        <div class="container">
+            <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+
+                <div class="card card-login">
+                    <div class="card-header ">
+                        <h3 class="header text-center">Login</h3>
+                    </div>
+                    <div class="card-body ">
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label>User Name</label>
+                                <input type="text" id="username" name="username" placeholder="User Name"
+                                    class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" id="password" name="password" placeholder="Password"
+                                    class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer ml-auto mr-auto">
+                        <button type="button" id="submit" name="submit" class="btn btn-warning btn-wd">Login</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{{>admin/admin_footer}}
+<script>
+    $(document).ready(function () {
+        //alert("hello");
+        /*$page = $('.section-image');
+         image_src = $page.data('image');
+         image_container = '<div class="full-page-background" style="background-image: url(' + image_src + ') "/>'
+         $page.append(image_container);*/
+        $("#submit").click(function () {
+            //alert("hello");
+            var uname = $("#username").val();
+            var password = $("#password").val();
+            $.ajax({
+                url: "http://localhost:3000/login",
+                method: "post",
+                data: { user_name: uname, passwd: password },
+                success: function (data) {
+
+                    var status = data["status"];
+                    //var token = data["token"];
+                    //console.log(token);
+                    
+                    if(status==200)
+                    {
+                         window.location.href = data['url'];
+                    }else
+                    {
+                        //alert(data['ms'])
+                        alert("hello");
+                       // alert("Something Goes Wrong");
+                        //$(".username").removeClass("has-error");
+                        
+                    }
+                }
+            });
+        });
+    });
+</script>
